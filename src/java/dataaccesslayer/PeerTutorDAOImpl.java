@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import transferobject.PeerTutor;
-import dataaccesslayer.DataSource;
 
 public class PeerTutorDAOImpl implements PeerTutorDAO {
 

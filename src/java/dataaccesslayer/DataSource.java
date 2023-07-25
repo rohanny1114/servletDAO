@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * This class gets a connection to the database 
  * using JDBC URL, user name, and password.
  * 
- * @author Rohan Kim
+ * @author Rohan Kim                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
  */
 public class DataSource {
 
@@ -34,7 +34,7 @@ public class DataSource {
     public Connection createConnection() {
         try {
             if (connection != null) {
-                System.out.println("Cannot create new connection, one exists already");
+                System.out.println("[SYSTEM]Cannot create new connection, one exists already");
             } else {
                 connection = DriverManager.getConnection(url, username, password);
             }
