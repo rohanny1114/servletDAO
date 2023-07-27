@@ -17,6 +17,7 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
         //        Do not forget to close the resources used inside this method.
         Connection con = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
         boolean result = false;
         try {
 		DataSource ds = new DataSource();
@@ -25,14 +26,14 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
                         "SELECT * FROM PeerTutor p "
                                 + "WHERE p.lastName  = ?"
                                 + "AND p.firstName = ?");
-                
-                System.out.println("[ TEST / PeerTutorDAOImpl ] last name: " + peerTutor.getLastName());
-                System.out.println("[ TEST / PeerTutorDAOImpl ] first name: " + peerTutor.getFirstName());
-                
+                                
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
-		result = pstmt.execute();
-                System.out.println("[ TEST / PeerTutorDAOImpl ] SELECT result: " + result);
+		rs = pstmt.executeQuery();
+                if(rs.next()){
+                    result = true;
+                } 
+                
         } catch(SQLException e){
 		e.printStackTrace();
 	}
@@ -42,6 +43,7 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 		try{ if(con != null){ con.close(); }}
 		catch(SQLException ex){System.out.println(ex.getMessage());}
 	}
+        System.out.println("[ TEST / RESULT ] isPeerTutorRegistered: " + result);
 	return result;
     }
     
@@ -51,13 +53,20 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
         //        Do not forget to close the resources used inside this method.
         Connection con = null;
 	PreparedStatement pstmt = null;
+        ResultSet rs = null;
         boolean result = false;
         try{
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
 		pstmt = con.prepareStatement("SELECT * FROM Course WHERE CourseCode = ?");
 		pstmt.setString(1, courseCode);
-		result = pstmt.execute();
+
+                rs = pstmt.executeQuery();
+                if(rs.next()){
+                    result =true;
+                } else {
+                result = false;}
+                System.out.println("[TEST] isCourseValid: "+result);
 	}
 	catch(SQLException e){
 		e.printStackTrace();
@@ -77,21 +86,26 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
         //        Do not forget to close the resources used inside this method.
         Connection con = null;
 	PreparedStatement pstmt = null;
+        ResultSet rs = null;
         boolean result = false;
         try{
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
 		pstmt = con.prepareStatement(
-                        "SELECT * FROM Student s "
-                                + "JOIN StudentCourse sc"
-                                + "ON s.StudentID = sc.Student_StudentID"
-                                + "WHERE s.LastName = ? "
-                                + "AND s.FirstName = ?"
-                                + " AND sc.Course_CourseCode= ?");
+                        "SELECT * FROM student s " +
+                        "JOIN studentcourse sc " +
+                        "on s.StudentID = sc.Student_StudentID " +
+                        "WHERE s.LastName = ? " +
+                        "AND s.FirstName = ? " +
+                        "AND sc.Course_CourseCode = ?");
+                            
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
                 pstmt.setString(3, courseCode);
-		result = pstmt.execute();
+		rs = pstmt.executeQuery();
+                if(rs.next()){
+                    result = true;
+                } 
 	}
 	catch(SQLException e){
 		e.printStackTrace();
@@ -102,6 +116,7 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 		try{ if(con != null){ con.close(); }}
 		catch(SQLException ex){System.out.println(ex.getMessage());}
 	}
+        System.out.println("[ TEST / RESULT ] hasPeerTutorTakenCourse: " + result);
 	return result;
     }
 
@@ -128,7 +143,8 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
                 pstmt.setString(2, peerTutor.getFirstName());
                 pstmt.setString(3, courseCode);
                 rs = pstmt.executeQuery();
-                grade = rs.getString(1);
+                rs.next();
+                grade = rs.getString("GradeCode");
         }
 	catch(SQLException e){
 		e.printStackTrace();
@@ -139,6 +155,7 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 		try{ if(con != null){ con.close(); }}
 		catch(SQLException ex){System.out.println(ex.getMessage());}
 	}
+        System.out.println("[TEST] getPeerTutorLetterGradeForCours: " +grade);
         return grade;
     }
     
@@ -148,22 +165,28 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
         //        Do not forget to close the resources used inside this method.
         Connection con = null;
 	PreparedStatement pstmt = null;
+        ResultSet rs = null;
         boolean result = false;
                
         try{
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
 		pstmt = con.prepareStatement(
-                        "SELECT * FROM PeerTutor pt "
-                                + "JOIN PeerTutorCourse ptc"
-                                + "ON pt.PeerTutorID = ptc.PeerTutor_PeerTutorID"
-                                + "WHERE pt.LastName = ? "
-                                + "AND pt.FirstName = ?"
+                        "SELECT * FROM PeerTutor pt"
+                                + " JOIN PeerTutorCourse ptc"
+                                + " ON pt.PeerTutorID = ptc.PeerTutor_PeerTutorID"
+                                + " WHERE pt.LastName = ? "
+                                + " AND pt.FirstName = ? "
                                 + " AND ptc.Course_CourseCode= ?");
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
                 pstmt.setString(3, courseCode);
-		result = pstmt.execute();
+		rs = pstmt.executeQuery();
+                if(rs.next()){
+                    result =true;
+                } else {
+                    result = false;
+                }
 	}
 	catch(SQLException e){
 		e.printStackTrace();
@@ -187,13 +210,11 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
 		pstmt = con.prepareStatement(
-                        "UPDATE PeerTutorCourse ptc"
-                                + "SET ptc.PeerTutor_PeerTutorID"
-                                + "= (SELECT PeerTutodID"
-                                + "FROM PeerTutor pt"
-                                + "WHERE pt.lastName = ?"
-                                + "AND pt.firstName = ?)"
-                                + ", ptc.Course_CourseCode = ?");
+                        "INSERT INTO PeerTutorCourse "
+                            + "(PeerTutor_PeerTutorID, Course_CourseCode)VALUES"
+                            + "((SELECT PeerTutorID FROM PeerTutor pt" 
+                            + " WHERE pt.lastName = ?" 
+                            + " AND pt.firstName = ?), ?)");
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
                 pstmt.setString(3, courseCode);  
