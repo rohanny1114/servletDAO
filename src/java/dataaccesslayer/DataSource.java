@@ -17,7 +17,7 @@ public class DataSource {
     /**
      * Initialize the JDBC connection properties
      */
-    private final String url = "jdbc:mysql://localhost:3306/peertutor";
+    private final String url = "jdbc:mysql://localhost:3306/peertutor?useSSL=false&allowPublicKeyRetrieval=true";
     private String username = "CST8288";
     private String password = "CST8288?";
 

@@ -9,16 +9,18 @@
 <!-- TODO:  Place your form here with the required input fields and a button. -->
 <!-- TODO:  Make sure to use the POST method instead of the GET method. -->
 <!-- HINT:  Look inside web.xml file to see the URL pattern for the servlet. -->
-    <form ACTION="http://localhost:8080/PeerTutorServletDAO/PeerTutorServlet-URL" METHOD="POST">
-        <label for="tutorLastName">Peer Tutor Last name: </label>
-        <input type="text" id="tutorLastName"><br>
+    <form ACTION="http://localhost:8080/PeerTutorServletDAO/PeerTutorServlet" METHOD="POST">
+        <label for="lastName">Peer Tutor Last name: </label>
+        <input type="text" id="lastName" name="lastName"><br>
 
-        <label for="tutorFirstName">Peer Tutor First name: </label>
-        <input type="text" id="tutorFirstName"><br>
+        <label for="firstName">Peer Tutor First name: </label>
+        <input type="text" id="firstName" name="firstName"><br>
 
         <label for="courseCode">Course Code: </label>
-        <input type="text" id="courseCode"><br>
-        <input type="submit" value="Submit">
+        <input type="text" id="courseCode" name="courseCode"><br>
+        <INPUT TYPE="SUBMIT">
+<!--        <input type="submit" value="Submit">    -->
+
     </form>
 
 </CENTER>

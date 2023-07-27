@@ -9,7 +9,7 @@ public class PeerTutorBusinessLogic {
     private PeerTutorDAO peerTutorDAO = null;
     private String[] qualifiedGrades = { "A+", "A", "A-" };
     
-    public PeerTutorBusinessLogic() {
+    public PeerTutorBusinessLogic( ) {
         // TODO:  Add your code here.  Need to instantiate a DAO object here.
     peerTutorDAO = new PeerTutorDAOImpl();
     }

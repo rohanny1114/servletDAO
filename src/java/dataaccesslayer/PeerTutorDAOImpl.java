@@ -10,6 +10,7 @@ import transferobject.PeerTutor;
 
 public class PeerTutorDAOImpl implements PeerTutorDAO {
 
+
     @Override
     public boolean isPeerTutorRegistered(PeerTutor peerTutor) {
         // TODO:  Add your code here.  Be sure to use try-catch-finally statement.
@@ -24,9 +25,14 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
                         "SELECT * FROM PeerTutor p "
                                 + "WHERE p.lastName  = ?"
                                 + "AND p.firstName = ?");
+                
+                System.out.println("[ TEST / PeerTutorDAOImpl ] last name: " + peerTutor.getLastName());
+                System.out.println("[ TEST / PeerTutorDAOImpl ] first name: " + peerTutor.getFirstName());
+                
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
 		result = pstmt.execute();
+                System.out.println("[ TEST / PeerTutorDAOImpl ] SELECT result: " + result);
         } catch(SQLException e){
 		e.printStackTrace();
 	}
@@ -143,6 +149,7 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
         Connection con = null;
 	PreparedStatement pstmt = null;
         boolean result = false;
+               
         try{
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
@@ -189,7 +196,9 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
                                 + ", ptc.Course_CourseCode = ?");
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
-                pstmt.setString(3, courseCode);               
+                pstmt.setString(3, courseCode);  
+                pstmt.execute();
+                
 	}
 	catch(SQLException e){
 		e.printStackTrace();
@@ -212,11 +221,16 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<PeerTutor> tutors = null;
+        List<PeerTutor> tutors = new ArrayList<>();
+        
         try {
             DataSource ds = new DataSource();
             con = ds.createConnection();
-            pstmt = con.prepareStatement("");
+            pstmt = con.prepareStatement( 
+                    "SELECT * FROM PeerTutor pt "
+                + "JOIN PeerTutorCourse ptc ON pt.PeerTutorID = ptc.PeerTutor_PeerTutorID "
+                + "WHERE ptc.Course_CourseCode = ?");
+            pstmt.setString(1, courseCode);
             rs = pstmt.executeQuery();
                 while(rs.next()){
                 PeerTutor tutor = new PeerTutor();

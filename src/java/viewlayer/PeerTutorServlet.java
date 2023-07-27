@@ -17,6 +17,7 @@ public class PeerTutorServlet extends HttpServlet {
     private String courseCode;
     private String errMsg;
 
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -28,8 +29,17 @@ public class PeerTutorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            String lastName = request.getParameter("lastName");
+            String fisrtName = request.getParameter("firstName");
+            String courseCode = request.getParameter("courseCode");
+
+            
+            System.out.println("[ TEST / PeerTutorServlet ] last name: "+lastName);
+            System.out.println("[ TEST / PeerTutorServlet ] first name: "+fisrtName);
+            System.out.println("[ TEST / PeerTutorServlet ] course code: "+courseCode);
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {                    
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -37,71 +47,70 @@ public class PeerTutorServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet PeerTutorServlet at/PeerTutorServletDAO</h1>");
-
-            out.println("<h1>Hello There</h1>");
+            
             out.println("</body>");
             out.println("</html>");
 
-/*            
+            out.println("<h2>TESTING</h2>");
+        
             PeerTutorBusinessLogic logic = new PeerTutorBusinessLogic();
-
+            
             if (!logic.isPeerTutorRegistered(pt)) {
-                System.out.println("[SYSTEM] person is not registered as a peer tutor");
+                System.out.println("[ TEST / PeerTutorServlet ] person is not registered as a peer tutor");
                 errMsg = "The person is not registered as a peer tutor.";
                 out.println("<ul>");
-                out.println("<li>Last Name: XXXX</li>");
-                out.println("<li>Fisrt Name: XXXX</li>");
+                out.println("<li>Last Name: " + lastName + "</li>");
+                out.println("<li>Fisrt Name: " + fisrtName + "</li>");
                 out.println("</ul>");
                 out.println("<div>Error: " + errMsg + "</div>");
             } else if (!logic.isCourseValid(courseCode)) {
-                System.out.println("[SYSTEM] course is not valid");
+                System.out.println("[ TEST / PeerTutorServlet ] course is not valid");
                 errMsg = "The course is not valid";
                 out.println("<ul>");
-                out.println("<li>Last Name: XXXX</li>");
-                out.println("<li>Fisrt Name: XXXX</li>");
-                out.println("<li>Course Code: XXXX</li>");
+                out.println("<li>Last Name: " + lastName + "</li>");
+                out.println("<li>Fisrt Name: " + fisrtName + "</li>");
+                out.println("<li>Course Code: " + courseCode + "</li>");
                 out.println("</ul>");
                 out.println("<div>Error: " + errMsg + "</div>");
             } else if (!logic.hasPeerTutorTakenCourse(pt, courseCode)) {
-                System.out.println("[SYSTEM]peer tutor has not taken the course");
+                System.out.println("[ TEST / PeerTutorServlet ] peer tutor has not taken the course");
                 errMsg = "The peer tutor has not taken the course.";
                 out.println("<ul>");
-                out.println("<li>Last Name: XXXX</li>");
-                out.println("<li>Fisrt Name: XXXX</li>");
-                out.println("<li>Course Code: XXXX</li>");
+                out.println("<li>Last Name: " + lastName + "</li>");
+                out.println("<li>Fisrt Name: " + fisrtName + "</li>");
+                out.println("<li>Course Code: " + courseCode + "</li>");
                 out.println("</ul>");
                 out.println("<div>Error: " + errMsg + "</div>");
             } else {
                 if (!logic.validateGrade(pt, courseCode)) {
-                    System.out.println("[SYSTEM]grade obtained by the peer tutor for the course is not sufficient");
+                    System.out.println("[ TEST / PeerTutorServlet ] grade obtained by the peer tutor for the course is not sufficient");
                     errMsg = "The letter grade obtained by the peer tutor for the course is not sufficient.";
                     out.println("<ul>");
-                    out.println("<li>Last Name: XXXX</li>");
-                    out.println("<li>Fisrt Name: XXXX</li>");
-                    out.println("<li>Course Code: XXXX</li>");
+                    out.println("<li>Last Name: " + lastName + "</li>");
+                    out.println("<li>Fisrt Name: " + fisrtName + "</li>");
+                    out.println("<li>Course Code: " + courseCode + "</li>");
                     out.println("</ul>");
                     out.println("<div>Error: " + errMsg + "</div>");
                 } else if (logic.isPeerTutorRegistered(pt)) {
-                    System.out.println("[SYSTEM]tutor is already assigned to the course");
+                    System.out.println("[ TEST / PeerTutorServlet ] tutor is already assigned to the course");
                     errMsg = "The tutor is already assigned to the course.";
                     out.println("<ul>");
-                    out.println("<li>Last Name: XXXX</li>");
-                    out.println("<li>Fisrt Name: XXXX</li>");
-                    out.println("<li>Course Code: XXXX</li>");
+                    out.println("<li>Last Name: " + lastName + "</li>");
+                    out.println("<li>Fisrt Name: " + fisrtName + "</li>");
+                    out.println("<li>Course Code: " + courseCode + "</li>");
                     out.println("</ul>");
                     out.println("<div>Error: " + errMsg + "</div>");
                 } else {
                     logic.assignCourseToPeerTutor(pt, courseCode);
-                    System.out.println("[SYSTEM] assign the course to the peer tutor");
+                    System.out.println("[ TEST / PeerTutorServlet ] assign the course to the peer tutor");
 
                     out.println("<table border=\"1\">");
-                    out.println("<caption>Table of Peer Tutor for XXXX</caption>");
+                    out.println("<caption>Table of Peer Tutor for " + courseCode + "</caption>");
                     pt.setLastName(request.getParameter("lastName"));
                     pt.setFirstName(request.getParameter("firstName"));
                     pt.setPeerTutorID(Integer.parseInt(request.getParameter("peerTutorID")));
 
-                    PeerTutorBusinessLogic bizLogic = new PeerTutorBusinessLogic();
-                    List<PeerTutor> tutors = bizLogic.getAllPeerTutorsForCourse(courseCode);
+                    List<PeerTutor> tutors = logic.getAllPeerTutorsForCourse(courseCode);
                     out.println("<tr>");
                     out.println("<th>Tutor ID</th>");
                     out.println("<th>Last Name</th>");
@@ -119,7 +128,7 @@ public class PeerTutorServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
             
-            */
+
         }
     }
     // TODO:  Add your code here.  Make sure to use try-catch or
