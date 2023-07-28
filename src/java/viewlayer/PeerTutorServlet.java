@@ -1,3 +1,9 @@
+/*
+Student Name: Rohan Kim
+Student Number: 041070929
+Course & Section #: 23S_CST8288_011
+Declaration: This is my own original work and is free from Plagiarism.
+*/
 package viewlayer;
 
 import java.io.IOException;
@@ -11,11 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 import businesslayer.PeerTutorBusinessLogic;
 import transferobject.PeerTutor;
 
+/**
+ * This class processes HTTP requests, composes HTML response on Servlet,
+ * runs logic using if statement that accesses the database 
+ * by calling its appropriate methods on each decision.
+ * 
+ * @author Rohan Kim
+ */
 public class PeerTutorServlet extends HttpServlet {
 
     private PeerTutor pt = new PeerTutor();
     private String errMsg;
-
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,10 +40,9 @@ public class PeerTutorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
            
         response.setContentType("text/html;charset=UTF-8");
- try (PrintWriter out = response.getWriter()) {                    
+        try (PrintWriter out = response.getWriter()) {                    
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -103,19 +114,15 @@ public class PeerTutorServlet extends HttpServlet {
                 } else {
                     logic.assignCourseToPeerTutor(pt, courseCode);
                     System.out.println("[ TEST / PeerTutorServlet ] assign the course to the peer tutor");
-
                     out.println("<table border=\"1\">");
                     out.println("<caption>Table of Peer Tutor for " + courseCode + "</caption>");
-
                     List<PeerTutor> tutors = logic.getAllPeerTutorsForCourse(courseCode);
                     out.println("<tr>");
                     out.println("<th>Tutor ID</th>");
                     out.println("<th>Last Name</th>");
                     out.println(" <th>First Name</th>");
                     out.println("</tr>");
-
-                    out.println("<tr>");
-                    
+                    out.println("<tr>");                    
                     for (PeerTutor tutor : tutors) {
                         out.printf("<tr><td>%d</td><td>%s</td><td>%s</td></tr>",
                                 tutor.getPeerTutorID(), tutor.getLastName(), tutor.getFirstName());
@@ -126,21 +133,9 @@ public class PeerTutorServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
             
-
         }
     }
-    // TODO:  Add your code here.  Make sure to use try-catch or
-    //        try-with-resources statement here.  Need to instantiate a
-    //        PrintWriter object which is a resource.  You can use the
-    //        PrintWriter object to compose the HTML response of this
-    //        servlet.  Also, need to instantiate a PeerTutorBusinessLogic
-    //        object here and use it to access the database by calling its
-    //        appropriate methods.  As the servlet composes the HTML response,
-    //        it should use the business logic object.  You should also
-    //        retrieve the request parameters here and instantiate a PeerTutor
-    //        object and set its fields as needed.  Use bgcolor="#FDF5E6" for
-    //        the background color of the HTML response of this servlet.
-    //        Please refer to the sample projects code in Week 9.
+
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 /**

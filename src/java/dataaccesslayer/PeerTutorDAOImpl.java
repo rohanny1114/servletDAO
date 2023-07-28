@@ -1,3 +1,9 @@
+/*
+Student Name: Rohan Kim
+Student Number: 041070929
+Course & Section #: 23S_CST8288_011
+Declaration: This is my own original work and is free from Plagiarism.
+*/
 package dataaccesslayer;
 
 import java.util.List;
@@ -8,32 +14,41 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import transferobject.PeerTutor;
 
+/**
+ * This class a concrete class which implements PeerTutor DAO.
+ * 
+ * @author Rohan Kim
+ */
 public class PeerTutorDAOImpl implements PeerTutorDAO {
 
-
+    /**
+     * This method creates connection to the database
+     * , checks if the input name is registered as a tutor
+     * , and closes connection when it's done.
+     * 
+     * @param peerTutor the DTO that contains tutor's last and first name.
+     * @return boolean that indicates whether the tutor is registered
+     */
     @Override
     public boolean isPeerTutorRegistered(PeerTutor peerTutor) {
-        // TODO:  Add your code here.  Be sure to use try-catch-finally statement.
-        //        Do not forget to close the resources used inside this method.
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         boolean result = false;
+        
         try {
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
 		pstmt = con.prepareStatement(
                         "SELECT * FROM PeerTutor p "
                                 + "WHERE p.lastName  = ?"
-                                + "AND p.firstName = ?");
-                                
+                                + "AND p.firstName = ?");                              
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
 		rs = pstmt.executeQuery();
                 if(rs.next()){
                     result = true;
-                } 
-                
+                }                 
         } catch(SQLException e){
 		e.printStackTrace();
 	}
@@ -47,20 +62,26 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 	return result;
     }
     
+    /**
+     * This method creates connection to the database
+     * , checks the input course code is valid
+     * , and closes connection when it's done.
+     * 
+     * @param courseCode the input course code
+     * @return boolean that indicates whether the course is valid
+     */
     @Override
     public boolean isCourseValid(String courseCode) {
-        // TODO:  Add your code here.  Be sure to use try-catch-finally statement.
-        //        Do not forget to close the resources used inside this method.
         Connection con = null;
 	PreparedStatement pstmt = null;
         ResultSet rs = null;
         boolean result = false;
+        
         try{
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
 		pstmt = con.prepareStatement("SELECT * FROM Course WHERE CourseCode = ?");
 		pstmt.setString(1, courseCode);
-
                 rs = pstmt.executeQuery();
                 if(rs.next()){
                     result =true;
@@ -80,14 +101,22 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 	return result;
     }
 
+    /**
+     * This method creates connection to the database
+     * , checks the tutor taken course before
+     * , and closes connection when it's done.
+     * 
+     * @param peerTutor the DTO that contains tutor's last and first name.
+     * @param courseCode the input course code
+     * @return boolean that indicated whether tutor taken course.
+     */
     @Override
     public boolean hasPeerTutorTakenCourse(PeerTutor peerTutor, String courseCode) {
-        // TODO:  Add your code here.  Be sure to use try-catch-finally statement.
-        //        Do not forget to close the resources used inside this method.
         Connection con = null;
 	PreparedStatement pstmt = null;
         ResultSet rs = null;
         boolean result = false;
+        
         try{
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
@@ -120,14 +149,21 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 	return result;
     }
 
+    /**
+     * This method creates connection to the database
+     * , gets the tutor's grade from the course
+     * , and closes connection when it's done.
+     * 
+     * @param peerTutor the DTO that contains tutor's last and first name.
+     * @param courseCode the input course code
+     * @return String that indicates the grade
+     */
     @Override
     public String getPeerTutorLetterGradeForCourse(PeerTutor peerTutor, String courseCode) {
-        // TODO:  Add your code here.  Be sure to use try-catch-finally statement.
-        //        Do not forget to close the resources used inside this method.
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String grade = "";
+        String grade = "";  
         
         try {
                 DataSource ds = new DataSource();
@@ -159,10 +195,17 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
         return grade;
     }
     
+    /**
+     * This method creates connection to the database
+     * , checks whether the tutor already assigned to the course
+     * , and closes connection when it's done.
+     * 
+     * @param peerTutor the DTO that contains tutor's last and first name.
+     * @param courseCode the input course code
+     * @return boolean that indicates whether course is assigned to the tutor
+     */
     @Override
     public boolean isCourseAlreadyAssignedToPeerTutor(PeerTutor peerTutor, String courseCode) {
-        // TODO:  Add your code here.  Be sure to use try-catch-finally statement.
-        //        Do not forget to close the resources used inside this method.
         Connection con = null;
 	PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -200,12 +243,19 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 	return result;
     }
 
+    /**
+     * This method creates connection to the database
+     * , assign registered tutor to the course
+     * , and closes connection when it's done.
+     * 
+     * @param peerTutor the DTO that contains tutor's last and first name.
+     * @param courseCode the input course code
+     */
     @Override
     public void assignCourseToPeerTutor(PeerTutor peerTutor, String courseCode) {
-        // TODO:  Add your code here.  Be sure to use try-catch-finally statement.
-        //        Do not forget to close the resources used inside this method.
         Connection con = null;
 	PreparedStatement pstmt = null;
+        
         try{
 		DataSource ds = new DataSource();
 		con = ds.createConnection();
@@ -218,8 +268,7 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
 		pstmt.setString(1, peerTutor.getLastName());
                 pstmt.setString(2, peerTutor.getFirstName());
                 pstmt.setString(3, courseCode);  
-                pstmt.execute();
-                
+                pstmt.execute();                
 	}
 	catch(SQLException e){
 		e.printStackTrace();
@@ -233,17 +282,18 @@ public class PeerTutorDAOImpl implements PeerTutorDAO {
     }
     
     /**
-     * This method retrieves all ~~~
-     * @param courseCode
-     * @return 
+     * This method calls getAllPeerTutorForCourse method
+     * that gets list of tutor who assigned any course.
+     * 
+     * @param courseCode the input course code
+     * @return List<PeerTutor> the list of peer tutors
      */
     @Override
     public List<PeerTutor> getAllPeerTutorsForCourse(String courseCode) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<PeerTutor> tutors = new ArrayList<>();
-        
+        List<PeerTutor> tutors = new ArrayList<>();       
         try {
             DataSource ds = new DataSource();
             con = ds.createConnection();

@@ -1,3 +1,9 @@
+/*
+Student Name: Rohan Kim
+Student Number: 041070929
+Course & Section #: 23S_CST8288_011
+Declaration: This is my own original work and is free from Plagiarism.
+*/
 package dataaccesslayer;
 
 import java.sql.Connection;
@@ -15,7 +21,7 @@ public class DataSource {
     private Connection connection = null;
 
     /**
-     * Initialize the JDBC connection properties
+     * Properties for initializing the JDBC connection 
      */
     private final String url = "jdbc:mysql://localhost:3306/peertutor?useSSL=false&allowPublicKeyRetrieval=true";
     private String username = "CST8288";
