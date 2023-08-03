@@ -38,7 +38,7 @@ public class PeerTutorBusinessLogic {
      * @param peerTutor the DTO that contains tutor's last and first name.
      * @return boolean that indicates whether the tutor is registered
      */
-    public boolean isPeerTutorRegistered(PeerTutor peerTutor) {
+     public boolean isPeerTutorRegistered(PeerTutor peerTutor) {
         return peerTutorDAO.isPeerTutorRegistered(peerTutor);
     }
     
